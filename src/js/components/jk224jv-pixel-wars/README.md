@@ -1,40 +1,68 @@
 # &lt;Pixel Wars&gt;
 
-A web component is providing a small game where the player controls the central tower shooting the evil squares trying to destroy is. 
+A web component is providing a small game where the player controls the central tower shooting the evil squares trying to destroy is.
 
 Shooting is aimed with the mouse pointer location, hold a mouse button to fire.
+The game pause if the mousepointer is brought outside of the canvas.
 
 ## Attributes
 
-### `level`
+### `startlevel`
 
 Designate what level the game will start on.
+Default value: `1`, ballaned around 1, only change if you want it Hard!
 
-Default value: `1`
+### `backgroundcolor`
 
-## Methods
+Sets the background color of the component.
+Personal suggestion : '#eeeeee'
+Default value: 'white'
+
+### `friendlycolor`
+
+Sets the color of the central tower and the bullets.
+Personal suggestion: 'green'
+Default value: 'black'
+
+### `enemycolor`
+
+Sets the color of the Eeeevil squares.
+Personal suggestion: 'red'
+Default value: 'black'
+
+### `textcolor`
+
+Sets the color of the text for the score, statistics, instructions and credits.
+Personal suggestion: 'black'
+Default value: 'black'
+
+## Public Methods
 
 ### `pause()`
-
-
 Returns: Reference to self.
-
 
 
 ## Events
 
 | Event Name | Fired When |
 |------------|------------|
-| `filled`| The board is filled with text.
+| `gameOver` | The tower size = Hp is reduced to <= 0.
 
 ## Styling with CSS
 
-The text (p element) is styleable using the part `text`
+The text (p element) is styleable using the part `instructions` *note: this is affected by the textcolor attribute*.
+
+The (div element) holding the buttons is styleable using the part `buttonSpace`
+
+The buttons is styleable using the part `buttons`
+
 
 ## Example
 
 ```html
-   <bart-board text="This is the text that will be written" speed="50"></bart-board>
+   <body>
+  <jk224jv-pixel-wars startlevel="1" backgroundcolor="#eeeeee" friendlycolor="green" enemycolor="red" textcolor="black"></jk224jv-pixel-wars>
+</body>
 ```
 
-![Example of the functions of the bart-board](./.readme/example.gif)
+![Example of the game](./.readme/screenshot.png)

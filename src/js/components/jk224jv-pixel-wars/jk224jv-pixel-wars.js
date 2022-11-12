@@ -22,19 +22,26 @@ template.innerHTML = `
       flex-direction:column;
     }
 
+    div#canvasWrapper {
+      padding: 2px;
+    }
+
     canvas {
       width:750px;
       height:750px;
     }
   </style>
-  <canvas part="canvas" id="canvas"></canvas>
-  <div class="buttonSpace" part="buttonSpace">
-  <p part="instructions">Hold mouse to shoot. Aim with mouse.<br>
-  Upgrades cost 100 * number of upgrades bought score.</p><hr>
-  <button part="button" id="upgradeSpeed">++Firespeed++</button>
-  <button part="button" id="upgradeBullet">++Bullet size++</button>
-  <button part="button" id="upgradeRestoreHp">++Restore Tower++</button>
+  <div id="canvasWrapper">
+    <canvas id="canvas"></canvas>
+    <div class="buttonSpace" part="buttonSpace">
+      <p part="instructions">Hold mouse to shoot. Aim with mouse.<br>
+      Upgrades cost 100 * number of upgrades bought score.</p><hr>
+      <button part="buttons" id="upgradeSpeed">++Firespeed++</button>
+      <button part="buttons" id="upgradeBullet">++Bullet size++</button>
+      <button part="buttons" id="upgradeRestoreHp">++Restore Tower++</button>
+    </div>
   </div>
+
 `
 
 customElements.define('jk224jv-pixel-wars',
@@ -138,15 +145,14 @@ customElements.define('jk224jv-pixel-wars',
       this.#canvas.style.width = `${rect.width}px`
       this.#canvas.style.height = `${rect.height}px`
 
-      this.#ctx.fillStyle = 'red'
-
       // Set and store settings.
       this.#settings = {
         tickTime: 10,
         tickNumber: 0,
         backgroundColor: 'white',
-        fillColor: 'red',
-        color: 'black'
+        enemyColor: 'black',
+        friendlyColor: 'black',
+        textColor: 'black'
       }
 
       this.#bullets = []
@@ -165,7 +171,7 @@ customElements.define('jk224jv-pixel-wars',
         upgradesBought: 0
       }
 
-      this.#drawCircle(this.#tower)
+      this.#render()
     }
 
     /**
@@ -174,7 +180,7 @@ customElements.define('jk224jv-pixel-wars',
      * @returns {string[]} attributes.
      */
     static get observedAttributes () {
-      return ['startlevel']
+      return ['startlevel', 'backgroundcolor', 'friendlycolor', 'enemycolor', 'textcolor']
     }
 
     /**
@@ -186,7 +192,21 @@ customElements.define('jk224jv-pixel-wars',
      */
     attributeChangedCallback (name, oldValue, newValue) {
       if (name === 'startlevel' && oldValue !== newValue) {
-        this.#level = newValue
+        this.#level = parseInt(newValue)
+      } else if (name === 'friendlycolor' && oldValue !== newValue) {
+        if (typeof newValue === 'string') {
+          this.#settings.friendlyColor = newValue
+        }
+      } else if (name === 'enemycolor' && oldValue !== newValue) {
+        if (typeof newValue === 'string') {
+          this.#settings.enemyColor = newValue
+        }
+      } else if (name === 'backgroundcolor' && oldValue !== newValue) {
+        this.#settings.backgroundColor = newValue
+        this.shadowRoot.querySelector('#canvasWrapper').style.backgroundColor = newValue
+      } else if (name === 'textcolor' && oldValue !== newValue) {
+        this.#settings.textColor = newValue
+        this.shadowRoot.querySelector('#canvasWrapper').style.color = newValue
       }
     }
 
@@ -230,6 +250,7 @@ customElements.define('jk224jv-pixel-wars',
             break
         }
         this.#tower.score -= (100 + 100 * this.#tower.upgradesBought)
+        this.#tower.upgradesBought++
         if (this.#tower.fireDelay === 50) {
           this.shadowRoot.getElementById('upgradeSpeed').disabled = true
         }
@@ -279,11 +300,16 @@ customElements.define('jk224jv-pixel-wars',
      * Render the gameboard.
      */
     #render () {
+      this.#ctx.fillStyle = this.#settings.fillColor
+      this.#ctx.strokeStyle = this.#settings.color
       this.#clear()
-      this.#drawCircle(this.#tower)
+
       for (let bullet = 0; bullet < this.#bullets.length; bullet++) {
         this.#drawCircle(this.#bullets[bullet])
       }
+
+      this.#drawCircle(this.#tower)
+
       for (let square = 0; square < this.#squares.length; square++) {
         this.#drawSquare(this.#squares[square])
       }
@@ -494,8 +520,10 @@ customElements.define('jk224jv-pixel-wars',
      * @param {Bullet} bullet - the object to draw.
      */
     #drawCircle (bullet) {
+      this.#ctx.fillStyle = this.#settings.friendlyColor
       this.#ctx.beginPath()
       this.#ctx.arc(bullet.xPos, bullet.yPos, Math.floor(bullet.size / 2), 0, 2 * Math.PI)
+      this.#ctx.fill()
       this.#ctx.stroke()
     }
 
@@ -505,7 +533,7 @@ customElements.define('jk224jv-pixel-wars',
      * @param {Square} square - a Square object.
      */
     #drawSquare (square) {
-      this.#ctx.fillStyle = 'red'
+      this.#ctx.fillStyle = this.#settings.enemyColor
       this.#ctx.fillRect(square.xPos, square.yPos, square.size, square.size)
     }
 
@@ -520,7 +548,7 @@ customElements.define('jk224jv-pixel-wars',
       const strWidth = this.#ctx.measureText(str).width
       this.#ctx.fillStyle = this.#settings.backgroundColor
       this.#ctx.fillRect(x, 0, strWidth, 30)
-      this.#ctx.fillStyle = this.#settings.fillColor
+      this.#ctx.fillStyle = this.#settings.textColor
       this.#ctx.fillText(str, x, y)
       this.#ctx.fillText(`Level: ${this.#level}`, x, y + 15)
     }
@@ -533,7 +561,7 @@ customElements.define('jk224jv-pixel-wars',
       const strWidth = this.#ctx.measureText(str).width
       this.#ctx.fillStyle = this.#settings.backgroundColor
       this.#ctx.fillRect(10, 730, strWidth, 15)
-      this.#ctx.fillStyle = this.#settings.fillColor
+      this.#ctx.fillStyle = this.#settings.textColor
       this.#ctx.fillText(str, 10, 740)
     }
 
@@ -568,9 +596,9 @@ customElements.define('jk224jv-pixel-wars',
       window.clearInterval(this.#shootingIntervalId)
       console.log('gamemove fires')
       this.#clear()
-      this.#ctx.shadowColor = '#dddddd'
+      this.#ctx.shadowColor = this.#settings.backgroundColor
       this.#ctx.shadowBlur = 15
-      this.#ctx.fillStyle = 'black'
+      this.#ctx.fillStyle = this.#settings.textColor
       const xOrigin = Math.floor(this.#canvas.width / 2)
       const yOringin = Math.floor(this.#canvas.height / 5)
       this.#ctx.font = '18px monospace'

@@ -1,18 +1,31 @@
 # Pixel-wars
 
+![screenshot](./.readme/screenshot.png)
+
 ## Squares vs Circles - A Tower shooter
+Further readme inside module.
 
-### Functional requirements
+## Installation
+- 1 Clone into a local folder using $ git clone
+- 2 Run 'npm install'
+- 2 Run 'npm run dev'
 
-- [ ] When the mouse button is pressed down, and the mouse pointer is positioned over the blackboard, the tower should shoot in the direction of the mousepointer.
-- [ ] When the mouse button is released, or the mouse pointer leaves the component, the text shooting should stop.
-- [ ] Squares should "attack" the tower.
+## Usage
+Open the vite emulated webserver in a browser.
+Obs. for entertainment and educational purpose only!
 
-- [ ] Attacks should come in waves ?
+## Authors and acknowledgment
 
-- [ ] Tower upgrades?
+- ॐ नमः शिवाय
+- Sir Terry Pratchett, becuase Terry should always be acknowledged.
+- Douglas Adams, becuase Douglas should always be acknowledged.
 
-### Non-functional requirements
+## License
+CC-BY-NC4.0
+https://creativecommons.org/licenses/by-nc/4.0/
 
-- [ ] You should create a reusable web component with all files required for the Bart board to work in the folder `src/components/pixel-wars/`.
-- [ ] The component should be well documented in the provided README.md
+## Project status
+Project is currently functional.
+
+## Bugs and support
+Please contact me throught discord, slack or student email. In that prefered order.
