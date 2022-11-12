@@ -143,7 +143,10 @@ customElements.define('jk224jv-pixel-wars',
       // Set and store settings.
       this.#settings = {
         tickTime: 10,
-        tickNumber: 0
+        tickNumber: 0,
+        backgroundColor: 'white',
+        fillColor: 'red',
+        color: 'black'
       }
 
       this.#bullets = []
@@ -513,7 +516,12 @@ customElements.define('jk224jv-pixel-wars',
      * @param {number} y - location on the y-axis. default = 10
      */
     #drawScore (x = 10, y = 10) {
-      this.#ctx.fillText(`Score: ${this.#tower.score}`, x, y)
+      const str = `Score: ${this.#tower.score}`
+      const strWidth = this.#ctx.measureText(str).width
+      this.#ctx.fillStyle = this.#settings.backgroundColor
+      this.#ctx.fillRect(x, 0, strWidth, 30)
+      this.#ctx.fillStyle = this.#settings.fillColor
+      this.#ctx.fillText(str, x, y)
       this.#ctx.fillText(`Level: ${this.#level}`, x, y + 15)
     }
 
@@ -521,7 +529,12 @@ customElements.define('jk224jv-pixel-wars',
      * Draws statistics.
      */
     #drawStatistics () {
-      this.#ctx.fillText(`Firedelay: ${this.#tower.fireDelay} Bullet-size: ${this.#tower.fireSize}`, 10, 740)
+      const str = `Firedelay: ${this.#tower.fireDelay}   Bullet-size: ${this.#tower.fireSize}   Upgrade cost:${100 + (100 * this.#tower.upgradesBought)}`
+      const strWidth = this.#ctx.measureText(str).width
+      this.#ctx.fillStyle = this.#settings.backgroundColor
+      this.#ctx.fillRect(10, 730, strWidth, 15)
+      this.#ctx.fillStyle = this.#settings.fillColor
+      this.#ctx.fillText(str, 10, 740)
     }
 
     /**
