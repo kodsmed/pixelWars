@@ -60,9 +60,9 @@ The buttons is styleable using the part `buttons`
 ## Example
 
 ```html
-   <body>
+
   <jk224jv-pixel-wars startlevel="1" backgroundcolor="#eeeeee" friendlycolor="green" enemycolor="red" textcolor="black"></jk224jv-pixel-wars>
-</body>
+
 ```
 
 ![Example of the game](./.readme/screenshot.png)
