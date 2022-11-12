@@ -1,0 +1,23 @@
+{
+  "name": "pixel-wars",
+  "version": "2.1.1",
+  "description": "Pixel-Wars is a tower shooter. Squares vs Circles.",
+  "type": "module",
+  "browser": ".src/js/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "npx eslint ./src || exit 0",
+    "lint:fix": "npx eslint ./src --fix || exit 0"
+  },
+  "contributors": [
+    "Jimmy Karlsson<jk224jv@student.lnu.se>"
+  ],
+  "license": "CC BY-NC 4.0",
+  "private": true,
+  "devDependencies": {
+    "@lnu/eslint-config": "^1.1.5",
+    "vite": "^3.0.7"
+  }
+}
