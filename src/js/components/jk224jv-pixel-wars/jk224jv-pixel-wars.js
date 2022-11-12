@@ -34,7 +34,7 @@ template.innerHTML = `
   <div id="canvasWrapper">
     <canvas id="canvas"></canvas>
     <div class="buttonSpace" part="buttonSpace">
-      <p part="instructions">Hold mouse to shoot. Aim with mouse.<br>
+      <p part="instructions">Hold mouse-button to shoot. Aim with mouse.<br>
       Upgrades cost 100 * number of upgrades bought score.</p><hr>
       <button part="buttons" id="upgradeSpeed">++Firespeed++</button>
       <button part="buttons" id="upgradeBullet">++Bullet size++</button>
